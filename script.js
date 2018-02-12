@@ -1,70 +1,78 @@
+function createRow(label, data) {
+  return `<tr><td>${label}</td><td>${data}</td></tr>`;
+}
+
+function unitToNumber(unit) {
+  switch(unit) {
+    case "year", "years":
+      return 5;
+    case "day", "days":
+      return 4;
+    case "hour", "hours":
+      return 3;
+    case "minute", "minutes":
+      return 2;
+    case "second", "seconds":
+      return 1;
+    default:
+      return 0;
+  }
+  
+}
+
+function shorterTime(shorterTime, longerTime) {
+  let shorterArray = shorterTime.split(" ");
+  let longerArray = longerTime.split(" ");
+  let shorterUnit = unitToNumber(shorterArray[1]);
+  let shorterNumber = parseInt(shorterArray[0]);
+  let longerUnit = unitToNumber(longerArray[1]);
+  let longerNumber = parseInt(longerArray[0]);
+  if (shorterUnit === longerUnit) {
+    if (longerNumber > shorterNumber) {
+      return shorterTime
+    }
+    return longerTime;
+  } else if (shorterUnit > longerUnit) {
+    return longerTime;
+  } else {
+    return shorterTime;
+  }
+}
+
 $(document).ready(() => {
-  $("#weatherSubmit").click(event => {
-    event.preventDefault();
-    let value = $("#weatherInput").val();
-    console.log(value);
-    let apiKey = "ce6211f23345783e46d6763ebf390a83";
-    let myurl =
-      "http://api.openweathermap.org/data/2.5/weather?q=" +
-      value +
-      ",US&units=imperial" +
-      "&APPID=" +
-      apiKey;
-    $.ajax({
-      url: myurl,
-      dataType: "json",
-      success: function(json) {
-        let results = "";
-        results += "<h2>Weather in " + json.name + "</h2>";
-        for (let i = 0; i < json.weather.length; i++) {
-          results +=
-            '<img src="http://openweathermap.org/img/w/' +
-            json.weather[i].icon +
-            '.png"/>';
+  let url = "https://www.myrentie.com/api/listings";
+  $.ajax({
+    url: url,
+    dataType: "json",
+    success: json => {
+      const data = json["data"];
+      let rows = [];
+      rows.push(createRow("Total number of listings", data.length));
+
+      rows.push(createRow("Most recent listing",
+       data.reduce((least, currentListing) => {
+        const currentTime = currentListing["timeOnline"];
+        if (shorterTime(least, currentTime)) {
+          return least;
         }
-        results += "<h2>" + json.main.temp + " &deg;F</h2>";
-        results += "<p>";
-        for (let i = 0; i < json.weather.length; i++) {
-          results += json.weather[i].description;
-          if (i !== json.weather.length - 1) results += ", ";
-        }
-        results += "</p>";
-        $("#weatherResults").html(results);
-      }
-    });
-  });
-  $("#questionSubmit").click(event => {
-    event.preventDefault();
-    let question = $("#question").val();
-    let url =
-      "https://api.stackexchange.com//2.2/search?&order=desc&sort=activity&intitle=" +
-      question +
-      "&site=stackoverflow";
-    $.ajax({
-      url: url,
-      dataType: "json",
-      success: json => {
-        const items = json["items"];
-        result = items.reduce((result, current) => {
-          return (
-            result +
-            '<div class="divider"></div><p><a href="' +
-            current["link"] +
-            '" >' +
-            current["title"] +
-            "</a></p>\n"
-          );
-        }, "");
-        $("#answers").html(result);
-      }
-    });
-  });
-  $("#weather-tab").click(event => {
-    $("#stackoverflow").css("display", "none");
-    $("#weather").css("display", "inherit");
-  });
-  $("#stack-tab").click(event => {
-    $("#stackoverflow").css("display", "inherit");
-    $("#weather").css("display", "none");
+        return currentTime;
+       }, "1000000 years")));
+
+      rows.push(createRow("Oldest listing", 
+        data.reduce((oldest, current) => {
+          const currentTime = currentListing["timeOnline"];
+          if (shorterTime(currentTime, oldest)) {
+            return oldest;
+          }
+          return currentTime;
+        }), "0 0"));
+
+      rows.push(createRow("Average price", 
+        data.reduce((sum, currentListing) => {
+          // Slice of dollar sign
+          return sum + parseInt(currentListing["price"].slice(1));
+        }, 0)/data.length))
+      $("#table").html(result);
+    }
   });
 });
