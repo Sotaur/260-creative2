@@ -1,0 +1,256 @@
+.portfolio {
+    display: grid;
+    grid-template: 30% 30% 30% / 1fr 1fr 1fr;
+    grid-gap: 10px;
+    justify-items: center;
+    margin: 2%;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #444;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    margin-bottom: 3px;
+}
+
+nav ul li a {
+    display: block;
+    float: left;
+    width: 60px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 14px 16px;
+}
+
+.active {
+    background: #030733;
+}
+
+
+a:visited {
+    text-decoration: none;
+}
+
+.footer a:visited {
+    color: white;
+}
+
+nav ul li a:hover {
+    background: #09A5BA;
+}
+
+
+footer {
+    background: #444;
+    text-align: center;
+    margin-top: 3%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    bottom: 0px;
+    width: 100%;
+}
+
+footer div {
+    display: block;
+    color: white;
+}
+
+.source-link {
+    text-decoration: none;
+    color: white;
+}
+
+.banner {
+    padding-right: 8%;
+    padding-left: 8%;
+    width: 80%;
+    height: 100%;
+}
+
+.container {
+    display: grid;
+    width: 80%;
+    grid-template-rows: 1fr 3fr;
+    margin: 10%
+}
+
+.menu {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin: auto;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 200px;
+    height: 100px;
+    margin: auto;
+    text-decoration: none;
+    color: white;
+    background: radial-gradient( gray 20%, black);
+
+}
+
+.icon-bg {
+    position: relative;
+    left: 40%;
+}
+
+.title {
+    display: flex;
+    justify-content: space-around;
+}
+
+.icon {
+    height: inherit;
+    width: inherit;
+}
+
+.form {
+    display: grid;
+    grid-column: 1fr;
+    grid-row: 50px 50px 50px 1fr 50px;
+}
+
+.form-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 30px 30px 30px 40px 100px 1fr;
+    grid-template-areas: "name-label name" "email-label email" "device-label device"
+        "radio-label radio" "message-label message" "submit submit";
+    grid-gap: 10px;
+    margin-bottom: 5px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+#device {
+    grid-area: device;
+}
+
+#device-lable {
+    grid-area: device-label;
+}
+
+#name-label {
+    grid-area: name-label;
+
+}
+
+#email-label {
+    grid-area: email-label;
+
+}
+
+#message-label {
+    grid-area: message-label;
+
+}
+
+#name {
+    grid-area: name;
+
+}
+
+#email {
+    grid-area: email;
+}
+
+#radio {
+    grid-area: radio;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#radio-label {
+    grid-area: radio-label;
+}
+
+#message {
+    grid-area: message;
+    word-wrap: break-word;
+}
+
+input[type=text],
+input[type=email] {
+    padding: 5px;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: lightgray;
+}
+
+input[type=submit] {
+    grid-area: submit;
+    border-radius: 5px;
+    border-style: none;
+    min-height: 30px;
+    min-width: 50px;
+    margin-left: 40%;
+    margin-right: 5%;
+}
+
+.article {
+    display: grid;
+    width: 60%;
+    grid-template-areas: "profile services" "pricing pricing";
+    grid-template-columns: 1fr 5fr;
+    grid-gap: 10px;
+    align-items: center;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.pricing {
+    grid-area: pricing;
+}
+.profile {
+    grid-area: profile;
+    max-width: 200px;
+}
+
+.about {
+    grid-area: services;
+    max-width: 400px;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: auto;
+    min-height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr 3fr auto;
+    height: 100%;
+}
+
+p {
+    text-align: center;
+}
+
+.service-icon {
+    width: 100%;
+}
+
+.filler {
+    display: grid;
+    justify-content: center;
+}
+
+.filler img {
+    max-width: 121px;
+}
