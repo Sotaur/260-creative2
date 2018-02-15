@@ -40,7 +40,7 @@ function shorterTime(leftTime, rightTime) {
 
 $(document).ready(() => {
   //let url = "https://www.myrentie.com/api/listings";
-  let url = "http://localhost:3000/api/listings";
+  let url = "http://127.0.0.1:3000/api/listings";
   $.ajax({
     url: url,
     type: "GET",
@@ -100,10 +100,12 @@ $(document).ready(() => {
       rows.push(createRow("Minimum square footage", minSquareFeet.toString() + '\''));
       
 
-      $("#table").html(
-        rows.reduce((combinedString, current) => {
+      $("#table").html('<table class="col s10 m6 l6 offset-s1 offset-m3 offest-l6 striped">'
+      + rows.reduce((combinedString, current) => {
           return combinedString + current;
         }, "")
+        + 
+        '</table>'
       );
     },
     failure: result => console.log(result)
