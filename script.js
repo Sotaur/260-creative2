@@ -39,8 +39,8 @@ function shorterTime(leftTime, rightTime) {
 }
 
 $(document).ready(() => {
-  //let url = "https://www.myrentie.com/api/listings";
-  let url = "http://127.0.0.1:3000/api/listings";
+  let url = "https://www.myrentie.com/api/listings";
+  //let url = "http://127.0.0.1:3000/api/listings";
   $.ajax({
     url: url,
     type: "GET",
