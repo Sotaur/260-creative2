@@ -3,76 +3,109 @@ function createRow(label, data) {
 }
 
 function unitToNumber(unit) {
-  switch(unit) {
-    case "year", "years":
+  switch (unit) {
+    case ("year", "years"):
       return 5;
-    case "day", "days":
+    case ("day", "days"):
       return 4;
-    case "hour", "hours":
+    case ("hour", "hours"):
       return 3;
-    case "minute", "minutes":
+    case ("minute", "minutes"):
       return 2;
-    case "second", "seconds":
+    case ("second", "seconds"):
       return 1;
     default:
       return 0;
   }
-  
 }
 
-function shorterTime(shorterTime, longerTime) {
-  let shorterArray = shorterTime.split(" ");
-  let longerArray = longerTime.split(" ");
-  let shorterUnit = unitToNumber(shorterArray[1]);
-  let shorterNumber = parseInt(shorterArray[0]);
-  let longerUnit = unitToNumber(longerArray[1]);
-  let longerNumber = parseInt(longerArray[0]);
-  if (shorterUnit === longerUnit) {
-    if (longerNumber > shorterNumber) {
-      return shorterTime
+function shorterTime(leftTime, rightTime) {
+  let leftArray = leftTime.split(" ");
+  let rightArray = rightTime.split(" ");
+  let leftUnit = unitToNumber(leftArray[1]);
+  let leftNumber = parseInt(leftArray[0]);
+  let rightUnit = unitToNumber(rightArray[1]);
+  let rightNumber = parseInt(rightArray[0]);
+  if (leftUnit == rightUnit) {
+    if (rightNumber < leftNumber) {
+      return leftTime;
     }
-    return longerTime;
-  } else if (shorterUnit > longerUnit) {
-    return longerTime;
+    return rightTime;
+  } else if (leftUnit > rightUnit) {
+    return rightTime;
   } else {
-    return shorterTime;
+    return leftTime;
   }
 }
 
 $(document).ready(() => {
-  let url = "https://www.myrentie.com/api/listings";
+  //let url = "https://www.myrentie.com/api/listings";
+  let url = "http://localhost:3000/api/listings";
   $.ajax({
     url: url,
-    dataType: "json",
+    type: "GET",
     success: json => {
       const data = json["data"];
       let rows = [];
       rows.push(createRow("Total number of listings", data.length));
-
-      rows.push(createRow("Most recent listing",
-       data.reduce((least, currentListing) => {
-        const currentTime = currentListing["timeOnline"];
-        if (shorterTime(least, currentTime)) {
-          return least;
-        }
-        return currentTime;
-       }, "1000000 years")));
-
-      rows.push(createRow("Oldest listing", 
-        data.reduce((oldest, current) => {
-          const currentTime = currentListing["timeOnline"];
-          if (shorterTime(currentTime, oldest)) {
+      // console.log('Finding the most recent listing');
+      rows.push(
+        createRow(
+          "Most recent listing",
+          data.reduce((least, currentListing) => {
+            const currentTime = currentListing["timeOnline"];
+            if (shorterTime(least, currentTime) == currentTime) {
+              return currentTime;
+            }
+            return least;
+          }, "1000000 years")
+        )
+      );
+      // console.log('Finding the oldest listing');
+      rows.push(
+        createRow(
+          "Oldest listing",
+          data.reduce((oldest, current) => {
+            const currentTime = current["timeOnline"];
+            if (shorterTime(currentTime, oldest) == oldest) {
+              return currentTime;
+            }
             return oldest;
-          }
-          return currentTime;
-        }), "0 0"));
+          }, "0 0")
+        )
+      );
+      
+      const prices = data.map((listing) => parseInt(listing["price"].slice(1)));
+      
+      let averagePrice = prices.reduce((sum, next) => sum + next) / prices.length;
+      averagePrice = Math.round(averagePrice * 100) / 100;
+      rows.push(createRow("Average price", '$' + averagePrice.toString()));
 
-      rows.push(createRow("Average price", 
-        data.reduce((sum, currentListing) => {
-          // Slice of dollar sign
-          return sum + parseInt(currentListing["price"].slice(1));
-        }, 0)/data.length))
-      $("#table").html(result);
-    }
+      let maxPrice = Math.round(Math.max(...prices) * 100) / 100;
+      rows.push(createRow("Max price", '$' + maxPrice));
+
+      let minPrice = Math.round(Math.min(...prices) * 100) / 100;
+      rows.push(createRow("Minimum price", '$' + minPrice));
+
+      const squareFeet = data.map((listing) => parseInt(listing['sqft']));
+
+      let averageSquareFeet = squareFeet.reduce((sum, next) => sum + next) / squareFeet.length;
+      averageSquareFeet = Math.round(averageSquareFeet * 100) / 100;
+      rows.push(createRow("Average square footage", averageSquareFeet.toString() + '\''));
+
+      let maxSquareFeet = Math.round(Math.max(...squareFeet) * 100) / 100;
+      rows.push(createRow("Max square footage", maxSquareFeet.toString() + '\''));
+
+      let minSquareFeet = Math.round(Math.min(...squareFeet) * 100) / 100;
+      rows.push(createRow("Minimum square footage", minSquareFeet.toString() + '\''));
+      
+
+      $("#table").html(
+        rows.reduce((combinedString, current) => {
+          return combinedString + current;
+        }, "")
+      );
+    },
+    failure: result => console.log(result)
   });
 });
