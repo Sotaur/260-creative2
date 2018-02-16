@@ -39,8 +39,9 @@ function shorterTime(leftTime, rightTime) {
 }
 
 $(document).ready(() => {
-  let url = "https://www.myrentie.com/api/listings";
+  //let url = "https://www.myrentie.com/api/listings";
   //let url = "http://127.0.0.1:3000/api/listings";
+  let url = "http://18.219.39.127/api/listings";
   $.ajax({
     url: url,
     type: "GET",
@@ -75,7 +76,7 @@ $(document).ready(() => {
         )
       );
       
-      const prices = data.map((listing) => parseInt(listing["price"].slice(1)));
+      const prices = data.map((listing) => parseFloat(listing["price"].slice(1)));
       
       let averagePrice = prices.reduce((sum, next) => sum + next) / prices.length;
       averagePrice = Math.round(averagePrice * 100) / 100;
@@ -84,7 +85,7 @@ $(document).ready(() => {
       let maxPrice = Math.round(Math.max(...prices) * 100) / 100;
       rows.push(createRow("Max price", '$' + maxPrice));
 
-      let minPrice = Math.round(Math.min(...prices) * 100) / 100;
+      let minPrice = Math.min(...prices.filter((price) => price > 10));
       rows.push(createRow("Minimum price", '$' + minPrice));
 
       const squareFeet = data.map((listing) => parseInt(listing['sqft']));
@@ -98,7 +99,6 @@ $(document).ready(() => {
 
       let minSquareFeet = Math.round(Math.min(...squareFeet) * 100) / 100;
       rows.push(createRow("Minimum square footage", minSquareFeet.toString() + '\''));
-      
 
       $("#table").html('<table class="col s10 m6 l6 offset-s1 offset-m3 offest-l6 striped">'
       + rows.reduce((combinedString, current) => {
@@ -107,6 +107,7 @@ $(document).ready(() => {
         + 
         '</table>'
       );
+
     },
     failure: result => console.log(result)
   });
