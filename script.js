@@ -76,7 +76,9 @@ $(document).ready(() => {
         )
       );
       
-      const prices = data.map((listing) => parseFloat(listing["price"].slice(1)));
+      const prices = data.map((listing) => {
+        return parseFloat(listing["price"].replace(/,/g, '').replace(/\$/g,''));
+      });
       
       let averagePrice = prices.reduce((sum, next) => sum + next) / prices.length;
       averagePrice = Math.round(averagePrice * 100) / 100;
