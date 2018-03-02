@@ -7,9 +7,13 @@
 
 <script>
  import Dashboard from './components/Dashboard.vue'
+ import Entry from "./components/Entry.vue";
  export default {
      name: 'App',
-     components: { Dashboard }
+     components: {
+         Dashboard, 
+         Entry
+     }
  }
 </script>
 

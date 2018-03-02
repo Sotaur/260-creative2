@@ -4,16 +4,29 @@ label {
 }
 
 body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+    display: grid;
+    min-height: 100%;
+    grid-template-columns: 50px auto 50px;
+    grid-template-areas: "header" "main" "footer";
 }
 
 main {
-    flex: 1 0 auto;
+    grid-area: main;
+}
+
+header {
+    grid-area: header;
+}
+
+footer {
+    grid-area: footer;
 }
 
 footer a {
     display: flex;
     text-align: center;
+}
+
+html {
+    height: 100%;
 }
