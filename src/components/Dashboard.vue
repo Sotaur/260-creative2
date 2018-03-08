@@ -79,81 +79,139 @@ export default {
     calculateStatistics: function() {
       console.log("Updating statistics...");
       const stats = [];
-      stats.push(
-        this.makeStatistic("Total number of listings", this.listings.length)
-      );
-      // console.log('Finding the most recent listing');
-
-      stats.push(
-        this.makeStatistic(
-          "Most recent listing",
-          this.listings.reduce((least, currentListing) => {
-            const currentTime = currentListing["timeOnline"];
-            if (this.shorterTime(least, currentTime) == currentTime) {
-              return currentTime;
-            }
-            return least;
-          }, "1000000 years")
-        )
-      );
-      stats.push(
-        this.makeStatistic(
-          "Oldest listing",
-          this.listings.reduce((oldest, current) => {
-            const currentTime = current["timeOnline"];
-            if (this.shorterTime(currentTime, oldest) == oldest) {
-              return currentTime;
-            }
-            return oldest;
-          }, "0 0")
-        )
-      );
-
-      const prices = this.listings.map(listing => {
-        return parseFloat(
-          listing["price"].replace(/,/g, "").replace(/\$/g, "")
+      try {
+        stats.push(
+          this.makeStatistic("Total number of listings", this.listings.length)
         );
-      });
+      } catch (error) {
+        console.log(error);
+      }
+      // console.log('Finding the most recent listing');
+      try {
+        stats.push(
+          this.makeStatistic(
+            "Most recent listing",
+            this.listings.reduce((least, currentListing) => {
+              const currentTime = currentListing["timeOnline"];
+              if (
+                currentTime &&
+                this.shorterTime(least, currentTime) == currentTime
+              ) {
+                return currentTime;
+              }
+              return least;
+            }, "1000000 years")
+          )
+        );
+      } catch (err) {
+        console.log(err);
+      }
 
-      let averagePrice =
-        prices.reduce((sum, next) => sum + next) / prices.length;
-      averagePrice = Math.round(averagePrice * 100) / 100;
-      stats.push(
-        this.makeStatistic("Average price", "$" + averagePrice.toString())
-      );
+      try {
+        stats.push(
+          this.makeStatistic(
+            "Oldest listing",
+            this.listings.reduce((oldest, current) => {
+              const currentTime = current["timeOnline"];
+              if (
+                currentTime &&
+                this.shorterTime(currentTime, oldest) == oldest
+              ) {
+                return currentTime;
+              }
+              return oldest;
+            }, "0 0")
+          )
+        );
+      } catch (error) {
+        console.error(error);
+      }
 
-      let maxPrice = Math.round(Math.max(...prices) * 100) / 100;
-      stats.push(this.makeStatistic("Max price", "$" + maxPrice));
+      try {
+        const prices = this.listings.map(listing => {
+          if (listing["price"]) {
+            return parseFloat(
+              listing["price"].replace(/,/g, "").replace(/\$/g, "")
+            );
+          } else {
+            return -1;
+          }
+        }).filter(price => price > 0);
+        try {
+          let averagePrice =
+            prices.reduce((sum, next) => sum + next) / prices.length;
+          averagePrice = Math.round(averagePrice * 100) / 100;
+          stats.push(
+            this.makeStatistic("Average price", "$" + averagePrice.toString())
+          );
+        } catch (error) {
+          console.error(error);
+        }
+        try {
+          let maxPrice = Math.round(Math.max(...prices) * 100) / 100;
+          stats.push(this.makeStatistic("Max price", "$" + maxPrice));
+        } catch (error) {
+          console.error(error);
+        }
 
-      let minPrice = Math.min(...prices.filter(price => price > 10));
-      stats.push(this.makeStatistic("Minimum price", "$" + minPrice));
+        try {
+          let minPrice = Math.min(...prices.filter(price => price > 10));
+          stats.push(this.makeStatistic("Minimum price", "$" + minPrice));
+        } catch (error) {
+          console.error(error);
+        }
+      } catch (error) {
+        console.error(error);
+      }
 
-      const squareFeet = this.listings.map(listing =>
-        parseInt(listing["sqft"])
-      );
+      try {
+        const squareFeet = this.listings.map(listing => {
+          if (listing["sqft"]) {
+            return parseFloat(listing["sqft"]);
+          } else {
+            return -1;
+          }
+        }).filter(sqft => sqft > 0);
+        try {
+          let averageSquareFeet =
+            squareFeet.reduce((sum, next) => sum + next) / squareFeet.length;
+          averageSquareFeet = Math.round(averageSquareFeet * 100) / 100;
+          stats.push(
+            this.makeStatistic(
+              "Average square footage",
+              averageSquareFeet.toString() + "'"
+            )
+          );
+        } catch (error) {
+          console.error(error);
+        }
 
-      let averageSquareFeet =
-        squareFeet.reduce((sum, next) => sum + next) / squareFeet.length;
-      averageSquareFeet = Math.round(averageSquareFeet * 100) / 100;
-      stats.push(
-        this.makeStatistic(
-          "Average square footage",
-          averageSquareFeet.toString() + "'"
-        )
-      );
+        try {
+          let maxSquareFeet = Math.round(Math.max(...squareFeet) * 100) / 100;
+          stats.push(
+            this.makeStatistic(
+              "Max square footage",
+              maxSquareFeet.toString() + "'"
+            )
+          );
+        } catch (error) {
+          console.error(error);
+        }
 
-      let maxSquareFeet = Math.round(Math.max(...squareFeet) * 100) / 100;
-      stats.push(
-        this.makeStatistic("Max square footage", maxSquareFeet.toString() + "'")
-      );
-
-      let minSquareFeet = Math.round(Math.min(...squareFeet) * 100) / 100;
-      stats.push(
-        this.makeStatistic(
-          "Minimum square footage",
-          minSquareFeet.toString() + "'"
-        )
-      );
+        try {
+          let minSquareFeet = Math.round(Math.min(...squareFeet) * 100) / 100;
+          stats.push(
+            this.makeStatistic(
+              "Minimum square footage",
+              minSquareFeet.toString() + "'"
+            )
+          );
+        } catch (error) {
+          console.error(error);
+        }
+      } catch (error) {
+        console.error(error);
+      }
       this.statistics = stats;
     }
   }
