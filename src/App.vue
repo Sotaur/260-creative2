@@ -1,4 +1,3 @@
-
 <template>
     <div id="app">
         <dashboard></dashboard>
@@ -8,11 +7,13 @@
 <script>
  import Dashboard from './components/Dashboard.vue'
  import Entry from "./components/Entry.vue";
+ import Graphs from './components/Graphs.vue'
  export default {
      name: 'App',
      components: {
          Dashboard, 
-         Entry
+         Entry,
+         Graphs
      }
  }
 </script>

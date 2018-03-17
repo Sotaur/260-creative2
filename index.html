@@ -1,52 +1,51 @@
 <!DOCTYPE html>
-<html style="height: 100%">
+<html>
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rentie Dashboard</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <link rel="stylesheet" type="script/css" href="/static/styles.css">
-    <link rel='shortcut icon' type='image/x-icon' href='/static/images/favicon.ico' />
+    <title>Rentie Dashboard</title>
 </head>
 
-<body style="height: 100%">
-    <header style="height: 15%">
+<body>
+    <header>
 
         <div class="row light-green accent-4">
-            <a class="brand-logo valign-wrapper" href="https://www.myrentie.com">
-                <img class="col s3 m3 l2 responsive-img" src="/static/images/LOGO-white.png" />
-                <h2 class="col s3 m3 l3 white-text">Dashboard</h2>
-                <div class="col s6 l7"></div>
-            </a>
+            <img class="col s3 m3 l2 responsive-img" src="/static/images/LOGO-white.png" />
+            <h2 class="col s3 m3 l3 white-text">Dashboard</h2>
+            <div class="col s6 l7"></div>
         </div>
 
     </header>
-    <main class="container" style="height: 80%">
-        <div id="title" class="row">
-            <p class="col">If anything looks odd, like an unrealistic price or square footage, that means we have low quality data</p>
-        </div>
-        <div class="row" id="app">
-        </div>
-        <div id="spacer">
-            <p><br></p>
-        </div>
-    </main>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
 
-    <footer class="page-footer light-green accent-4" style="height: 5%">
-        <div class="row" style="margin: 0 !important">
+    <footer class="page-footer light-green accent-4">
+        <div class="row">
             <div class="col offset-s5">
-                <a class="white-text" href="https://github.com/Sotaur/260-creative2">See the repository for this website</a>
+                <a class="white-text" href="https://github.com/Sotaur/260-creative2">Code found here</a>
             </div>
         </div>
     </footer>
-
 </body>
+<style>
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+    }
+    
+    #app {
+        margin: auto;
+    }
+</style>
 
 </html>
