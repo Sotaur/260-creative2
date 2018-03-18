@@ -1,19 +1,16 @@
 <template>
     <div id="app">
-        <dashboard></dashboard>
+        <app-header></app-header>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
- import Dashboard from './components/Dashboard.vue'
- import Entry from "./components/Entry.vue";
- import Graphs from './components/Graphs.vue'
+ import AppHeader from './components/AppHeader';
  export default {
      name: 'App',
      components: {
-         Dashboard, 
-         Entry,
-         Graphs
+         AppHeader
      }
  }
 </script>

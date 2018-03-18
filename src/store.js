@@ -59,11 +59,11 @@ export default new Vuex.Store({
                 })
                 .catch(err => {});
         },
-        updateItem(context, item) {
+        addUser(context) {
             axios
-                .put("/api/items/" + item.id, item)
+                .post("/api/user/")
                 .then(response => {
-                    return true;
+                    return context.dispatch('setUser', response.data);
                 })
                 .catch(err => {});
         },
