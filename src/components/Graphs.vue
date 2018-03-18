@@ -2,11 +2,13 @@
 <div>
   <listing-graph></listing-graph>
   <listing-form></listing-form>
+  <user-pie></user-pie>
 </div>
 </template>
 
 <script>
 import ListingGraph from "./ListingGraph";
+import UserPie from "./UserPie";
 import ListingForm from "./ListingForm";
 export default {
   name: "Graphs",
