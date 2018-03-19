@@ -2,6 +2,13 @@
     <div id="app">
         <app-header></app-header>
         <router-view></router-view>
+        <footer class="page-footer light-green accent-4">
+        <div id="footer">
+            <div>
+                <a class="white-text" href="https://github.com/Sotaur/260-creative2">Code found here</a>
+            </div>
+        </div>
+    </footer>
     </div>
 </template>
 
@@ -23,5 +30,8 @@
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
 }
 </style>

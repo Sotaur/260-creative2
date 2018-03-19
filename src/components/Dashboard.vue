@@ -222,6 +222,7 @@ export default {
 #dashboard {
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 .spacer {
