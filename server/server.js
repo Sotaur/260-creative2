@@ -23,16 +23,17 @@ const userCollection = process.env.USER_COLLECTION;
 
 const dbURL = 'mongodb://' + process.env.DATABASE_USERNAME + ':' + process.env.DATABASE_PASS +
     '@' + process.env.DATABASE_HOST + '/' + process.env.DATABASE_NAME;
+
 const cleanListings = () => {
     listings = listings.map(listing => {
         let numPrice = 0;
-        if (listing["price"]) {
+        if (listing["price"] && typeof listing["price"] !== "number") {
             numPrice = parseFloat(
                 listing["price"].replace(/,/g, "").replace(/\$/g, "")
             );
         }
         let numSqFt = 0;
-        if (listing["sqft"]) {
+        if (listing["sqft"] && typeof listing["sqft"] !== "number") {
             numSqFt = parseFloat(listing["sqft"].replace(/,/g, ""));
         }
         return {
