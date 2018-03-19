@@ -21,7 +21,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 /*Strip the ul of padding and list styling*/
 .clear {
   float: clear;
