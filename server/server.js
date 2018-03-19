@@ -56,9 +56,7 @@ const getListings = () => {
 
                     listings = listings.concat(data);
                     console.log(listings.length);
-                    if (i === listingCollections.length - 1) {
-                        cleanListings();
-                    }
+                    cleanListings();
                 });
             }
         }
