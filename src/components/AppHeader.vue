@@ -9,7 +9,7 @@
     <ul id="menu" class="light-green accent-4">
       <li><router-link to="/" class="white-text">Statistics</router-link></li>
       <li><router-link class="white-text" to="/graphs">Graph</router-link></li>
-      <li><a class="white-text" href="https://myrentie.com">Main Website</a></li>
+      <li><a class="white-text" href="https://myrentie.com">Main Website (One Way)</a></li>
     </ul>	
   </nav>
   </header>

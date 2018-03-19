@@ -130,7 +130,7 @@ export default {
         datasets: [
           {
             label: "Histogram of " + title,
-            backgroundColor: "#000000",
+            backgroundColor: "#64dd17",
             data: data
           }
         ]
