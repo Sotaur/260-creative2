@@ -21,6 +21,7 @@ export default new Vuex.Store({
             state.listings = listings;
         },
         setUser(state, user) {
+            console.log(user);
             state.user = user;
         },
         setUserStats(state, statistics) {
@@ -32,6 +33,7 @@ export default new Vuex.Store({
             axios
                 .get("/api/listing")
                 .then(response => {
+                    console.log("got listings", response.data);
                     context.commit("setListings", response.data);
                     return true;
                 })
@@ -39,9 +41,11 @@ export default new Vuex.Store({
         },
         getUserStats(context) {
             axios
-                .get("/api/user")
+                .get("/api/user-stats")
                 .then(response => {
-                    context.commit("setUserStatistics", response.data);
+
+                    console.log("got user stats", response.data);
+                    context.commit("setUserStats", response.data);
                     return true;
                 })
                 .catch(err => console.log(err));
@@ -52,10 +56,15 @@ export default new Vuex.Store({
             context.dispatch('getUserStats');
         },
         addListing(context, listing) {
+            console.log(listing);
+            console.log(this.state.user);
             axios
-                .post("/api/listing", listing)
+                .put("/api/listing", {
+                    listing,
+                    id: this.state.user.id
+                })
                 .then(response => {
-                    return context.dispatch("getListings");
+                    context.commit("setUser", response.data);
                 })
                 .catch(err => {});
         },
@@ -63,15 +72,15 @@ export default new Vuex.Store({
             axios
                 .post("/api/user/")
                 .then(response => {
-                    return context.dispatch('setUser', response.data);
+                    return context.commit('setUser', response.data);
                 })
                 .catch(err => {});
         },
-        deleteItem(context, item) {
+        resetListings(context) {
             axios
-                .delete("/api/items/" + item.id)
+                .delete("/api/listing/" + this.state.user.id)
                 .then(response => {
-                    return context.dispatch("getItems");
+                    return context.commit("setUser", response.data);
                 })
                 .catch(err => {});
         }

@@ -1,12 +1,13 @@
 <template>
- <div>
+ <div class="graph-container">
+   <form>
      <select v-model="groupBy" name="listingGraph">
          <option value="price">Price</option>
          <option value="city">City</option>
          <option value="sqFootage">Square Footage</option>
      </select>
-    <input>
-    <div class="graph">
+     </form>
+    <div class="graph container">
         <bar-chart v-if="allListings" :chart-data="chartData" :options="options" />
     </div>
  </div>  
@@ -20,7 +21,6 @@ export default {
   data() {
     return {
       groupBy: "price",
-      allListings: [],
       options: {
         responsive: true,
         maintainAspectRatio: true,
@@ -35,12 +35,9 @@ export default {
     };
   },
   created: function() {
-    this.getItems();
+    this.getData();
   },
   computed: {
-    month: function() {
-      return parseInt(this.monthText);
-    },
     chartData: function() {
       if (this.groupBy === "price") {
         let maxPrice = this.allListings.reduce((max, listing) => {
@@ -63,8 +60,9 @@ export default {
       }
     },
     allListings: function() {
-      let listings = this.$store.listings;
-      listings.concat(this.$store.user.listings);
+      
+      let listings = this.$store.getters.listings;
+      listings = listings.concat(this.$store.getters.user.listings);
       return listings;
     }
   },
@@ -103,7 +101,7 @@ export default {
     },
     getHistogrammedNumericalData: function(maxVal, title) {
        let labels = [];
-      for (let num = 0; num < max; num += 100) {
+      for (let num = 0; num < maxVal; num += 100) {
         let right = num + 100;
         let label = num.toString() + "-" + right.toString();
         labels.push({
@@ -124,14 +122,15 @@ export default {
         }
       });
       for (let label in labels) {
-        data.push(label.number);
+        data.push(labels[label].number);
       }
+      console.log(data);
       return {
-        labels: labels,
+        labels: labels.map(label => label.label),
         datasets: [
           {
             label: "Histogram of " + title,
-            backgroundColor: "#f87979",
+            backgroundColor: "#000000",
             data: data
           }
         ]
@@ -142,5 +141,20 @@ export default {
 </script>
 
 <style scoped>
-
+ .graph {
+   max-width: 900px;
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+ }
+ .graph-container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 100%;
+ }
+ bar-chart {
+   width: 100%;
+ }
 </style>

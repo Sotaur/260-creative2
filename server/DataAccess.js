@@ -1,39 +1,39 @@
 const MongoClient = require('mongodb').MongoClient;
 
+const state = {
+    db: null
+};
+
 export class DataAccess {
 
-    static state = {
-        db: null
-    };
-
     static connect(url, done) {
-        if (this.state.db) {
+        if (state.db) {
             return done();
         }
-        MongoClient.connect(url, function(err, db) {
+        MongoClient.connect(url, function(err, client) {
             if (err) {
                 return done(err);
             }
-            this.state.db = db;
+            state.db = client.db(process.env.DATABASE_NAME);
             done();
-        }.bind(this));
+        });
     }
 
     static get() {
-        return this.state.db;
+        return state.db;
     }
 
     static close(done) {
-        if (this.state.db) {
-            this.state.db.close(function(err, result) {
-                this.state.db = null;
+        if (state.db) {
+            state.db.close(function(err, result) {
+                state.db = null;
                 done(err);
             });
         }
     }
 
-    static getCollectionData(collection, done) {
-        this.state.db.collection(collection).find({}).toArray((err, data) => {
+    static getCollectionData(collectionName, done) {
+        state.db.collection(collectionName).find({}).toArray((err, data) => {
             if (err) {
                 console.log(err);
                 return;
